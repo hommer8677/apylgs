@@ -1,0 +1,10 @@
+.env
+db.json
+inject_game/injected.json
+venv/
+env/
+.venv/
+__pycache__/
+*.py[cod]
+.vscode/
+.idea/
