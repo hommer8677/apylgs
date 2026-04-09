@@ -7,7 +7,7 @@ from config import DATA_FILE, chats, get_banwords, add_group, in_group, gif_add,
 
 load_dotenv()
 HOMMER_ID=int(os.getenv("HOMMER_ID"))
-BANK=int(os.getenv("BANK"))
+BANK=os.getenv("BANK")
 
 group_router = Router()
 group_router.message.filter(F.chat.type.in_({"group", "supergroup"}))
