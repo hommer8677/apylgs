@@ -23,7 +23,7 @@ async def help_command(message: types.Message):
     await message.answer("Привет! Я бот для управления банвордами и отслеживания популярности гифок и стикеров в этом чате.\n\n"
                         "Доступные команды:\n"
                         "/add - Добавить запрещённое слово(only admin) ➕\n"
-                        "Если хотите добавить несколько слов через запятую и оберните их в квадратные скобки," 
+                        "Если хотите добавить несколько слов - напишите их через запятую и оберните в квадратные скобки," 
                         "например: \n<i><b>/add [слово1, слово2, слово3]</b></i>\n"
                         "/del - Удалить запрещённое слово(only admin) 🗑\n"
                         "/del_all - Удалить все запрещённые слова(only admin) 🗑\n"
@@ -60,6 +60,11 @@ async def add_word(message: types.Message):
     added_words = 0
     for word in words:
         if word not in data[chat_id]["banwords"] and len(word) > 1:
+            if word[0] == "@": return message.reply("❌ Ты не можешь добавлять в банлист юзернеймы")
+            elif word == "@apylgs_tg_bot":
+                return message.reply("Команда /add позволяет добавить запрещённое слово в банлист(only admin) ➕\n"
+                                    "Если хотите добавить несколько слов - напишите их через запятую и оберните в квадратные скобки," 
+                                    "например: \n<i><b>/add [слово1, слово2, слово3]</b></i>\n", parse_mode="HTML")
             added_words += 1
             data[chat_id]["banwords"].append(word)
             #await message.answer(f"Добавлено слово: {word}")
@@ -88,6 +93,12 @@ async def del_word(message: types.Message):
         words = clean_text.split()
     else:
         words = words.split()
+
+    if len(words) == 1:
+        if words[0] == "@apylgs_tg_bot":
+            return message.reply("Команда /del позволяет удалить запрещённое слово из банлиста(only admin) 🗑\n
+                                "Если вы хотите удалить несколько слов сразу - напишите их через запятую и оберните в квадратные скобки,
+                                "например: \n<i><b>/del [слово1, слово2, слово3]</b></i>\n",parse_mode="HTML")
         if words[0] not in data[chat_id]["banwords"]:
             return await message.reply(f"❌ Слова {words[0]} нет в банворде")
         if words[0] in data[chat_id]["banwords"]:
@@ -238,10 +249,12 @@ async def check_banwords(message: types.Message):
 
         for word in data[chat_id]["banwords"]:
             clean_word = word.strip().lower()
-            if clean_word and clean_word in text:
-                try:
-                    await message.delete()
-                    print(f"Удалено: {clean_word} найдено в {text}")
-                except Exception as e:
-                    print(f"Ошибка удаления: {e}")
-                break
+            if clean_word:
+                if clean_word[0] == "@": return
+                if clean_word in text:
+                    try:
+                        await message.delete()
+                        print(f"Удалено: {clean_word} найдено в {text}")
+                    except Exception as e:
+                        print(f"Ошибка удаления: {e}")
+                    break
