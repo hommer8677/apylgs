@@ -96,8 +96,8 @@ async def del_word(message: types.Message):
 
     if len(words) == 1:
         if words[0] == "@apylgs_tg_bot":
-            return message.reply("Команда /del позволяет удалить запрещённое слово из банлиста(only admin) 🗑\n
-                                "Если вы хотите удалить несколько слов сразу - напишите их через запятую и оберните в квадратные скобки,
+            return message.reply("Команда /del позволяет удалить запрещённое слово из банлиста(only admin) 🗑\n"
+                                "Если вы хотите удалить несколько слов сразу - напишите их через запятую и оберните в квадратные скобки,"
                                 "например: \n<i><b>/del [слово1, слово2, слово3]</b></i>\n",parse_mode="HTML")
         if words[0] not in data[chat_id]["banwords"]:
             return await message.reply(f"❌ Слова {words[0]} нет в банворде")
