@@ -250,9 +250,9 @@ async def check_banwords(message: types.Message):
 
         for word in data[chat_id]["banwords"]:
             clean_word = word.strip().lower()
-            if clean_word:
-                if clean_word[0] == "@": return
-                if clean_word in text:
+            if clean_word and text:
+                if text[0] == "@": return None
+                elif clean_word in text:
                     try:
                         await message.delete()
                         print(f"Удалено: {clean_word} найдено в {text}")
