@@ -1,4 +1,5 @@
 import json, os
+from decimal import Decimal
 
 # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # DATA_FILE = os.path.join(BASE_DIR, "db.json")
@@ -73,3 +74,8 @@ def is_valid_path(file=DATA_FILE):
     if not os.path.exists(file):
         with open(file, 'w', encoding='utf-8') as f:
             json.dump({}, f) 
+
+
+def format_decimal(n):
+    # normalize() убирает лишние нули в конце
+    return format(Decimal(str(n)).normalize(), 'f')

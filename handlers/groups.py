@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 from aiogram import Router, F, types
 from aiogram.filters import Command, CommandObject
-from config import DATA_FILE, chats, get_banwords, add_group, in_group, gif_add, stick_add, is_valid_path
+from config import DATA_FILE, chats, get_banwords, add_group, in_group, gif_add, stick_add, is_valid_path, format_decimal
 
 load_dotenv()
 HOMMER_ID=int(os.getenv("HOMMER_ID"))
@@ -96,8 +96,8 @@ async def del_word(message: types.Message):
 
     if len(words) == 1:
         if words[0] == "@apylgs_tg_bot":
-            return message.reply("Команда /del позволяет удалить запрещённое слово из банлиста(only admin) 🗑\n
-                                "Если вы хотите удалить несколько слов сразу - напишите их через запятую и оберните в квадратные скобки,
+            return message.reply("Команда /del позволяет удалить запрещённое слово из банлиста(only admin) 🗑\n"
+                                "Если вы хотите удалить несколько слов сразу - напишите их через запятую и оберните в квадратные скобки,"
                                 "например: \n<i><b>/del [слово1, слово2, слово3]</b></i>\n",parse_mode="HTML")
         if words[0] not in data[chat_id]["banwords"]:
             return await message.reply(f"❌ Слова {words[0]} нет в банворде")
@@ -203,7 +203,9 @@ async def loan(message: types.Message, command: CommandObject):
     else: 
         if message.from_user.id == HOMMER_ID:
             return await message.answer(f"{BANK} займи пж 100 денег")
-    username = ""
+        else: return await message.answer("/money - Поклянчить денег у друга 💵\n" 
+                                        "Команда должна вводиться по следующему паттерну: \n<i><b>/money @{юзернейм_друга} {сумма}</b></i>\n", parse_mode="HTML")
+    username = BANK
     money = 100
     if len(args) == 1:
         is_num = args[0].replace(",", ".").replace(".", "", 1).isdigit()
@@ -220,14 +222,13 @@ async def loan(message: types.Message, command: CommandObject):
         else:
             username = args[0]
             money = args[1]
-    else:
-        return await message.answer("Введи аргументы по инструкции")
+
     if not username.startswith("@"):
         username = "@" + username
     try:
         money = float(money)
     except: return await message.answer("Второй аргумент должен быть числом")
-    return await message.answer(f"{username} займи пж {money:g} денег")
+    return await message.answer(f"{username} займи пж {format_decimal(money)} денег")
 
 @group_router.message(F.text | F.caption)
 async def check_banwords(message: types.Message):
