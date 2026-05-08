@@ -232,8 +232,8 @@ async def loan(message: types.Message, command: CommandObject):
 
 @group_router.message(F.text | F.caption)
 async def check_banwords(message: types.Message):
-    if message.from_user.id == message.bot.id:
-        return
+    '''if message.from_user.id == message.bot.id:
+        return'''
     chat_id = str(message.chat.id)
     if chat_id not in chats:
         if not in_group(chat_id):
