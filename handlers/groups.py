@@ -232,8 +232,8 @@ async def loan(message: types.Message, command: CommandObject):
 
 @group_router.message(F.text | F.caption)
 async def check_banwords(message: types.Message):
-    '''if message.from_user.id == message.bot.id:
-        return'''
+    if message.from_user.id == message.bot.id:
+        return
     chat_id = str(message.chat.id)
     if chat_id not in chats:
         if not in_group(chat_id):
@@ -251,8 +251,8 @@ async def check_banwords(message: types.Message):
         for word in data[chat_id]["banwords"]:
             clean_word = word.strip().lower()
             if clean_word and text:
-                if text[0] == "@": return None
-                elif clean_word in text:
+                '''if text[0] == "@": return None'''
+                if clean_word in text:
                     try:
                         await message.delete()
                         print(f"Удалено: {clean_word} найдено в {text}")
