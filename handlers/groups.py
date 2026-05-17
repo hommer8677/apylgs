@@ -249,7 +249,8 @@ async def check_banwords(message: types.Message):
         text = (message.text or message.caption or "").lower()
 
         #for word in data[chat_id]["banwords"]:
-        for word in text:
+        words = text.split()
+        for word in words:
             clean_word = word.strip().lower()
             if clean_word and text:
                 if word[0] == "@": return None
