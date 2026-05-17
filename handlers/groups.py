@@ -248,11 +248,17 @@ async def check_banwords(message: types.Message):
     if chat_id in data and data[chat_id]["banwords"]:
         text = (message.text or message.caption or "").lower()
 
-        for word in data[chat_id]["banwords"]:
+        #for word in data[chat_id]["banwords"]:
+        for word in text:
             clean_word = word.strip().lower()
             if clean_word and text:
+<<<<<<< HEAD
                 '''if text[0] == "@": return None'''
                 if clean_word in text:
+=======
+                if word[0] == "@": return None
+                elif clean_word in data[chat_id]["banwords"]:
+>>>>>>> 61ce9fc (fix banwords check)
                     try:
                         await message.delete()
                         print(f"Удалено: {clean_word} найдено в {text}")
